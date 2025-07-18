@@ -73,18 +73,14 @@ Remove an order from the portfolio
 	+ `--id` : Order ID
 
 ### `import`
-Import data from a file
+Import data from the `improt` folder
 
-* Usage: `order-stack import --folder-path <folder-path>`
-* Options:
-	+ `--folder-path` : Folder path containing data files
+* Usage: `order-stack import`
 
 ### `export`
-Export data to a file
+Export data to the `export` folder
 
-* Usage: `order-stack export --output-dir <output-dir>`
-* Options:
-	+ `--output-dir` : Output directory for exported data
+* Usage: `order-stack export`
 
 ### `summary`
 Display a summary of the portfolio
