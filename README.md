@@ -52,11 +52,11 @@ Add a new order to the portfolio
 * Usage: `order-stack add-order --symbol <symbol> --side <side> --date <date> --volume <volume> --spent-usdt <spent-usdt> --note <note>`
 * Options:
 	+ `--symbol` : Token symbol
-	+ `--side` : Order side (buy or sell)
+	+ `--side` : Order side (`buy` or `sell`)
 	+ `--date` : Order date
 	+ `--volume` : Order volume
 	+ `--spent-usdt` : Order spent USDT
-	+ `--note` : Order note
+	+ `--note` : Order note (optional)
 
 ### `list-orders`
 List all orders for a token
