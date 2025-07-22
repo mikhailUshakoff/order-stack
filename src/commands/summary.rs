@@ -42,6 +42,7 @@ pub async fn summary(db: &sled::Db) -> sled::Result<()> {
     let start = std::time::Instant::now();
 
     let position_prefix = format!("{}/", PREFIX_POSITION);
+    let mut line_color = true;
     for entry in db.scan_prefix(&position_prefix) {
         let (key_bytes, val) = entry?;
         let key = std::str::from_utf8(&key_bytes).unwrap();
@@ -62,8 +63,11 @@ pub async fn summary(db: &sled::Db) -> sled::Result<()> {
         total_spent += position.spent_usdt;
         total_value += value;
 
+        line_color = !line_color;
+
         println!(
-            "{:<8} {:>12.4} {:>15.4} {:>15.4} {:>15.4} {:>15.4} {:>10.2} {:>10} {:>10}",
+            "{}{:<8} {:>12.4} {:>15.4} {:>15.4} {:>15.4} {:>15.4} {:>10.2} {:>10} {:>10}\x1b[0m",
+            if line_color { "\x1b[0m" } else { "\x1b[38;5;248m" },
             symbol,
             position.volume,
             position.spent_usdt,

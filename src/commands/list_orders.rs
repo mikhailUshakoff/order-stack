@@ -58,7 +58,7 @@ pub fn list_orders(db: &sled::Db, symbol: &str) -> sled::Result<()> {
 
     for order in orders {
         println!(
-            "{:<18} {:<12} {}{:<7} {:>15.4} {:>15.4} {:>15.4} {}%\x1b[0m",
+            "{:<18} {:<12} {}{:<7} {:>15.4} {:>15.4} {:>15.4} {}\x1b[0m",
             format!("{:016}", order.id),
             order.date,
             get_color(&order.side),
