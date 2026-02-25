@@ -3,7 +3,8 @@ use std::collections::HashMap;
 use crate::{
     market::fetch_market_data,
     models::{
-        constants::{PREFIX_POSITION, PREFIX_TOKEN}, MarketData, Token, TokenPosition
+        constants::{PREFIX_POSITION, PREFIX_TOKEN},
+        MarketData, Token, TokenPosition,
     },
 };
 
@@ -67,7 +68,11 @@ pub async fn summary(db: &sled::Db) -> sled::Result<()> {
 
         println!(
             "{}{:<8} {:>12.4} {:>15.4} {:>15.4} {:>15.4} {:>15.4} {:>10.2} {:>10} {:>10}\x1b[0m",
-            if line_color { "\x1b[0m" } else { "\x1b[38;5;248m" },
+            if line_color {
+                "\x1b[0m"
+            } else {
+                "\x1b[38;5;248m"
+            },
             symbol,
             position.volume,
             position.spent_usdt,

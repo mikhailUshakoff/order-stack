@@ -1,5 +1,6 @@
 use crate::models::{
-    constants::{PREFIX_ORDER, PREFIX_POSITION}, Order, Side, TokenPosition
+    constants::{PREFIX_ORDER, PREFIX_POSITION},
+    Order, Side, TokenPosition,
 };
 
 pub fn get_color(side: &Side) -> &str {

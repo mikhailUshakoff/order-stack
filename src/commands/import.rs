@@ -1,3 +1,4 @@
+use clap::ValueEnum;
 use std::fs;
 use std::path::Path;
 use std::str::FromStr;
@@ -103,19 +104,16 @@ pub fn import(db: &sled::Db, folder_path: &str) -> sled::Result<()> {
                 }
 
                 let date_str = &fields[0];
-                let volume_str = fields[1].replace(',', ".");
-                let spent_str = fields[2].replace(',', ".");
+                let side_str = &fields[1];
+                let volume_str = fields[2].replace(',', ".");
+                let spent_str = fields[3].replace(',', ".");
 
                 let date_parsed = normalize_date(date_str)?;
-                let mut volume = f64::from_str(&volume_str).unwrap_or(0.0);
-                let mut spent = f64::from_str(&spent_str).unwrap_or(0.0);
-                let side = if volume < 0.0 {
-                    volume *= -1.0;
-                    spent *= -1.0;
-                    Side::Sell
-                } else {
-                    Side::Buy
-                };
+                let volume = f64::from_str(&volume_str).unwrap_or(0.0);
+                let spent = f64::from_str(&spent_str).unwrap_or(0.0);
+                let side = Side::from_str(side_str, true).map_err(|e| {
+                    sled::Error::ReportableBug(format!("Invalid side '{}': {}", side_str, e))
+                })?;
 
                 add_order(db, symbol.clone(), side, date_parsed, volume, spent, None)?;
             }
