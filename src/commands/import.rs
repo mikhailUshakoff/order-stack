@@ -12,7 +12,7 @@ fn normalize_date(input: &str) -> sled::Result<String> {
         .filter(|s| !s.is_empty())
         .collect();
     if digits.len() == 3 {
-        let (day, month, year) = (digits[0], digits[1], digits[2]);
+        let (year, month, day) = (digits[0], digits[1], digits[2]);
         if year.len() == 2 {
             return Ok(format!("20{}-{:0>2}-{:0>2}", year, month, day));
         }
