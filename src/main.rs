@@ -5,7 +5,6 @@ mod models;
 
 use clap::Parser;
 use cli::{Cli, Commands};
-use tokio;
 
 use crate::commands::{
     add_order, add_token, export, import, list_orders, list_tokens, remove_order, remove_token,

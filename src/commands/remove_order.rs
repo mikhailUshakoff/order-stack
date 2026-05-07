@@ -24,10 +24,13 @@ pub fn remove_order(db: &sled::Db, id: u64) -> sled::Result<()> {
                 Some(val) => serde_json::from_slice(&val).map_err(|e| {
                     sled::Error::ReportableBug(format!("position parse error: {}", e))
                 })?,
-                None => TokenPosition {
-                    volume: 0.0,
-                    spent_usdt: 0.0,
-                },
+                None => {
+                    println!(
+                        "⚠️  Position for {} not found, creating new one",
+                        order.symbol
+                    );
+                    TokenPosition::new()
+                }
             };
 
             position.remove(&order.side, order.volume, order.spent_usdt);

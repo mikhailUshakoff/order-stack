@@ -15,6 +15,7 @@ A command-line application for managing tokens portfolio.
 	+ [import](#import)
 	+ [export](#export)
 	+ [summary](#summary)
+* [Ratio calculation](#ratio-calculation)
 
 ## Features
 
@@ -86,3 +87,17 @@ Export data to the `export` folder
 Display a summary of the portfolio
 
 * Usage: `order-stack summary`
+
+## Ratio calculation
+
+For each token, the app first checks your net investment (`spent_usdt = buy_usdt - sell_usdt`).
+
+* If net investment is still positive, it means you have put in more money than you have taken out, so ratio is calculated from current position value vs current net investment.
+* If net investment is zero or negative, it means sells already covered all buys (or more), so ratio is calculated from total received value (`current_value + sell_usdt`) vs total buy cost (`buy_usdt`).
+
+Formula reference:
+
+* `RATIO` (per token):
+	+ If `spent_usdt > 0`: `RATIO = (current_value / spent_usdt) * 100`
+	+ Otherwise: `RATIO = ((current_value + sell_usdt) / buy_usdt) * 100`
+* `TOTAL RATIO`: `TOTAL RATIO = (total_value / total_spent) * 100`

@@ -20,19 +20,12 @@ pub fn list_orders(db: &sled::Db, symbol: &str) -> sled::Result<()> {
     if let Some(val) = db.get(&position_key)? {
         let position: TokenPosition = serde_json::from_slice(&val)
             .map_err(|e| sled::Error::ReportableBug(format!("position parse error: {}", e)))?;
-        let avg_price = if position.volume.abs() > f64::EPSILON {
-            if position.spent_usdt < 0.0 {
-                0.0
-            } else {
-                position.spent_usdt / position.volume
-            }
-        } else {
-            0.0
-        };
-
+        let avg_price = position.get_avg_price();
         println!(
             "📊 \x1b[38;5;50mNet Position: {:>35.4} {:>15.4} {:>15.4}\x1b[0m",
-            position.volume, position.spent_usdt, avg_price
+            position.volume(),
+            position.spent_usdt(),
+            avg_price
         );
     } else {
         println!("📊 No position for {}", symbol_upper);
@@ -52,8 +45,8 @@ pub fn list_orders(db: &sled::Db, symbol: &str) -> sled::Result<()> {
 
     println!("{}", "-".repeat(89));
     println!(
-        "{:<18} {:<12} {:<7} {:>12} {:>15} {:>15}  {}",
-        "ID", "Date", "Side", "Volume", "USDT", "Price", "Note"
+        "{:<18} {:<12} {:<7} {:>12} {:>15} {:>15}  Note",
+        "ID", "Date", "Side", "Volume", "USDT", "Price"
     );
     println!("{}", "-".repeat(89));
 

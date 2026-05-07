@@ -45,10 +45,13 @@ pub fn add_order(
         Some(val) => serde_json::from_slice::<TokenPosition>(&val).map_err(|e| {
             sled::Error::ReportableBug(format!("position deserialization error: {}", e))
         })?,
-        None => TokenPosition {
-            volume: 0.0,
-            spent_usdt: 0.0,
-        },
+        None => {
+            println!(
+                "⚠️  Position for {} not found, creating new one",
+                order.symbol
+            );
+            TokenPosition::new()
+        }
     };
 
     position_value.add(&order.side, order.volume, order.spent_usdt);
