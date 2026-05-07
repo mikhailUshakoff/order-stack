@@ -25,9 +25,9 @@ impl TokenPosition {
         self.buy_usdt
     }
 
-        pub fn sell_usdt(&self) -> f64 {
-            self.sell_usdt
-        }
+    pub fn sell_usdt(&self) -> f64 {
+        self.sell_usdt
+    }
 
     pub fn spent_usdt(&self) -> f64 {
         self.buy_usdt - self.sell_usdt
