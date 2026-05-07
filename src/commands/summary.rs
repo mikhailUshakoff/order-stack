@@ -11,6 +11,8 @@ use crate::{
 pub async fn summary(db: &sled::Db) -> sled::Result<()> {
     let mut total_spent = 0.0;
     let mut total_value = 0.0;
+    let mut total_buy = 0.0;
+    let mut total_sell = 0.0;
 
     println!(
         "{:<8} {:>12} {:>15} {:>15} {:>15} {:>15} {:>10} {:>10} {:>10}",
@@ -63,6 +65,8 @@ pub async fn summary(db: &sled::Db) -> sled::Result<()> {
 
         total_spent += position.spent_usdt();
         total_value += value;
+        total_buy += position.buy_usdt();
+        total_sell += position.sell_usdt();
 
         line_color = !line_color;
 
@@ -92,9 +96,26 @@ pub async fn summary(db: &sled::Db) -> sled::Result<()> {
     );
     println!(
         "\x1b[38;5;50mTOTAL RATIO: {:.2}%\x1b[0m",
-        total_value / total_spent * 100.0
+        calculate_total_ratio(total_spent, total_value, total_buy, total_sell)
+    );
+        println!(
+        "\x1b[38;5;248mTOTAL BUY:  {:>12.2} USDT\x1b[0m",
+        total_buy
+    );
+    println!(
+        "\x1b[38;5;248mTOTAL SELL: {:>12.2} USDT\x1b[0m",
+        total_sell
     );
 
     println!("Time: {} nanos", start.elapsed().as_nanos());
     Ok(())
+}
+
+fn calculate_total_ratio(total_spent: f64, total_value: f64, total_buy: f64, total_sell: f64) -> f64 {
+    if total_spent > f64::EPSILON {
+        (total_value / total_spent) * 100.0
+    } else {
+        (total_value + total_sell) / total_buy * 100.0
+    }
+    
 }
