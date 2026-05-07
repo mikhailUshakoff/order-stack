@@ -28,9 +28,9 @@ fn split_csv_line(line: &str) -> Vec<String> {
     let mut result = Vec::new();
     let mut current = String::new();
     let mut in_quotes = false;
-    let mut chars = line.chars().peekable();
+    let chars = line.chars().peekable();
 
-    while let Some(c) = chars.next() {
+    for c in chars {
         match c {
             '"' => {
                 in_quotes = !in_quotes;

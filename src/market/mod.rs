@@ -1,6 +1,5 @@
 use crate::models::MarketData;
 use reqwest::Client;
-use sled;
 
 pub async fn fetch_market_data(symbol_list: &str) -> sled::Result<Vec<MarketData>> {
     let url = "https://api.coingecko.com/api/v3/coins/markets";
@@ -23,7 +22,7 @@ pub async fn fetch_market_data(symbol_list: &str) -> sled::Result<Vec<MarketData
         .await
         .map_err(|e| sled::Error::ReportableBug(e.to_string()))?;
 
-    if response.len() == 0 {
+    if response.is_empty() {
         return Err(sled::Error::ReportableBug(
             "Market data is empty".to_string(),
         ));

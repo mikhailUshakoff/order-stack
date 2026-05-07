@@ -58,10 +58,10 @@ pub async fn summary(db: &sled::Db) -> sled::Result<()> {
             continue;
         };
 
-        let value = position.volume * mdata.price();
-        let ratio = position.get_ratio(value);
+        let value = position.position_value(mdata.price());
+        let ratio = position.get_ratio(mdata.price());
 
-        total_spent += position.spent_usdt;
+        total_spent += position.spent_usdt();
         total_value += value;
 
         line_color = !line_color;
@@ -74,8 +74,8 @@ pub async fn summary(db: &sled::Db) -> sled::Result<()> {
                 "\x1b[38;5;248m"
             },
             symbol,
-            position.volume,
-            position.spent_usdt,
+            position.volume(),
+            position.spent_usdt(),
             avg_price,
             mdata.price(),
             value,
